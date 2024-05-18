@@ -1,8 +1,8 @@
 import { expect } from "@playwright/test";
 import Ajv from "ajv";
+import { faker } from '@faker-js/faker'
 
 export async function validateJsonSchema(fileName: string, body: object) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const existingSchema = require(`../data/schema/${fileName}`);
 
   const ajv = new Ajv({ allErrors: false });
@@ -14,4 +14,15 @@ export async function validateJsonSchema(fileName: string, body: object) {
   }
 
   expect(validRes).toBe(true);
+}
+
+export async function createUser(condition: 'valid' | 'invalid') {
+  if (condition == 'valid') {
+    return {
+      name: faker.person.fullName(),
+      gender: faker.person.sex(),
+      email: `${faker.person.firstName()}-${faker.number.int()}@yopmail.com`,
+      status: 'active'
+    }
+  }
 }
