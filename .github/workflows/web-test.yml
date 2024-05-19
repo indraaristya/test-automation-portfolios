@@ -8,7 +8,7 @@ jobs:
     env:
       RETRY: 1
       WORKER: 2
-      HEADLESS: false
+      HEADLESS: true
       BASE_URL: https://demo.playwright.dev/todomvc
     steps:
       - uses: actions/checkout@v3
