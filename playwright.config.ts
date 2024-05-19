@@ -48,5 +48,14 @@ export default defineConfig({
       },
       testDir: './tests/API'
     },
+    {
+      name: 'web',
+      use: { 
+        ...devices['Desktop Chrome'], 
+        channel: 'chrome',
+        baseURL: process.env.BASE_URL
+      },
+      testDir: './tests/WEB'
+    },
   ],
 });
