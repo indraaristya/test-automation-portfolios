@@ -10,6 +10,7 @@ export class TodoPage {
   readonly btnMarkTodo: Locator;
   readonly btnDeleteSingleTodo: Locator;
 
+  readonly txtEditField: Locator;
   readonly lblCountTodo: Locator;
   readonly btnTabAll: Locator;
   readonly btnTabActive: Locator;
@@ -23,6 +24,7 @@ export class TodoPage {
     this.btnMarkTodo = page.locator('//ul[@class="todo-list"]//input[@type="checkbox"]')
     this.btnDeleteSingleTodo = page.locator('//button[@class="destroy"]');
 
+    this.txtEditField = page.locator('//input[@class="edit"]')
     this.lblCountTodo = page.locator('//span[@data-testid="todo-count"]');
     this.btnTabAll = page.locator('//a[text()="All"]');
     this.btnTabActive = page.locator('//a[text()="Active"]');
@@ -47,5 +49,36 @@ export class TodoPage {
     await this.page.keyboard.press('Enter');
 
     return value;
+  }
+
+  async addMultipleTodo(count: number) {
+    let todoTitles = [];
+    for (let i = 0; i < count; i++) {
+      const todoTitle = await this.addSingleTodo('random');
+      todoTitles.push(todoTitle)
+    }
+
+    return todoTitles
+  }
+
+  async editSingleTodo(index: number, currentValue: string, newValue: string = null) {
+    let editedValue: string;
+    const suffix = '-edited'
+    const todoElement = this.lblTodoTitle.nth(index - 1)
+    await waitForElement(todoElement);
+
+    await todoElement.dblclick();
+
+    if (!newValue) {
+      editedValue = currentValue + suffix
+      await this.page.keyboard.type(suffix);
+    } else {
+      editedValue = newValue;
+      await this.txtEditField.nth(index - 1).fill(editedValue)
+    }
+    
+    await this.page.keyboard.press('Enter');
+
+    return editedValue
   }
 }
