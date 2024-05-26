@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 import { waitForElement } from '../helper/web-helper';
 import { setup } from '../helper/setup';
 
@@ -80,5 +80,16 @@ export class TodoPage {
     await this.page.keyboard.press('Enter');
 
     return editedValue
+  }
+
+  async checkTodoAs(index: number, status: 'completed' | 'active') {
+    const todoElement = this.btnMarkTodo.nth(index - 1)
+    await waitForElement(todoElement);
+    if (status == 'completed') {
+      await expect(todoElement).not.toBeChecked();
+    } else {
+      await expect(todoElement).toBeChecked();
+    }
+    await todoElement.click();
   }
 }
