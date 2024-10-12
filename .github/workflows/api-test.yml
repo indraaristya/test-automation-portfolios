@@ -19,7 +19,7 @@ jobs:
       - name: Install playwright browsers
         run: npx playwright install chrome
       - name: Run tests
-        run: npx playwright test --project=api
+        run: BUILD_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} BUILD_NUMBER=${{ github.run_number }} TRIGGERED_BY=${{ github.actor }} SLACK_URL=${{ secrets.SLACK_URL }} npx playwright test --project=api
       - uses: actions/upload-artifact@v3
         if: always()
         with:
