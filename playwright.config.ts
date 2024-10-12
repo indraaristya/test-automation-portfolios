@@ -26,6 +26,13 @@ export default defineConfig({
     ['html', { open: 'never' }], 
     ['json', {  outputFile: './playwright-report/test-results.json' }], 
     ['list'],
+    ['playwright-slack-report', { 
+      webhookUrl: process.env.SLACK_URL,
+      projectName: 'Personal Project',
+      triggerBy: process.env.TRIGGERED_BY,
+      buildUrl: process.env.BUILD_URL,
+      buildNumber: process.env.BUILD_NUMBER,
+    }]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
